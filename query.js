@@ -1,13 +1,16 @@
 import pg from 'pg';
 const { Pool } = pg;
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const pool = new Pool({
-    host: process.env.PGHOST,
-    port: process.env.PGPORT,
-    user: process.env.PGUSER,
-    password: process.env.PGPASSWORD,
-    database: process.env.PGDATABASE,
-    ssl: { rejectUnauthorized: false },
+  host: process.env.PGHOST,
+  port: process.env.PGPORT,
+  user: process.env.PGUSER,
+  password: process.env.PGPASSWORD,
+  database: process.env.PGDATABASE,
+  ssl: { rejectUnauthorized: false },
 });
 
 export const queryDB = async (sql) => {
