@@ -39,3 +39,16 @@ No other text.
     throw new Error(`Bad JSON from LLM: ${e.message}\nExtracted JSON:\n${jsonMatch[0]}`);
   }
 }
+async function test() {
+  try {
+    const response = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: 'Hello, world!' }],
+    });
+    console.log(response.choices[0].message.content);
+  } catch (err) {
+    console.error('Error:', err);
+  }
+}
+
+test();

@@ -12,7 +12,7 @@ app.use(cors({
   origin: [
     'http://localhost:3000',
     'http://localhost:3001',
-    'https://node-project-1-f3zj.onrender.com'   // ← put real FE URL
+    'https://node-project-jdmc.onrender.com'   // ← put real FE URL
   ],
   methods: ['GET','POST','OPTIONS'],
   credentials: true,
