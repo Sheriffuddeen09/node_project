@@ -1,35 +1,36 @@
 import OpenAI from 'openai';
 import dotenv from 'dotenv';
-
 dotenv.config();
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-export const askLLM = async (question, schema) => {
+export async function askLLM(question, schema) {
   const prompt = `
-Schema:\n${schema}
-Question: ${question}
-Generate SQL to answer the question and summarize the result in JSON:
+Schema:
+${schema}
+
+Question:
+${question}
+
+Return valid JSON only:
 {
   "sql": "...",
   "summary": "...",
-  "chartType": "bar/pie/line/table",
+  "chartType": "bar|line|pie|table",
   "labels": [...],
   "data": [...]
-}
-`;
-
-  const completion = await openai.chat.completions.create({
-    model: 'gpt-4',
+}`;
+  const chat = await openai.chat.completions.create({
+    model: 'gpt-3.5-turbo',          // ✅ universally available
     messages: [{ role: 'user', content: prompt }],
   });
 
-  const content = completion.choices[0].message.content;
-  console.log('LLM response:', content);
+  const raw = chat.choices[0].message.content;
+  console.log('[LLM] raw →', raw);
 
   try {
-    return JSON.parse(content);
+    return JSON.parse(raw);
   } catch (e) {
-    throw new Error('Failed to parse LLM response as JSON: ' + e.message + '\nResponse:\n' + content);
+    throw new Error(`Bad JSON from LLM: ${e.message}\n${raw}`);
   }
-};
+}
